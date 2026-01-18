@@ -1,0 +1,25 @@
+char *detectarComando (char *prompt) {
+	/*
+	 * Funcion que detecta el comando introducido por el usuario
+	 * Parametros:
+	 * *prompt -> cadena de caracteres que contiene lo que introdujo el usuario
+	 * Valor de retorno
+	 * *com -> cadena de caracteres con el comando entresacado
+	 */
+
+	char *com = prompt;
+
+	int i = 0;
+	if (com[i] == ' ' || com[i] == '\0') { // si escribe un espacio al comienzo o no se escribe nada
+		errorNum = 2;
+		printf("ERROR. Comando no existente\n");
+		com[0] = '\0';						// asignamos null al primer elemento de la cadena para finalizarla
+		return com;							// para salir antes de la funcion
+	}
+	for (; prompt[i] != ' ' ; i++) {
+		com[i] = prompt[i];
+	}
+	com[i] = '\0';
+
+	return com;
+}
