@@ -22,7 +22,6 @@
 	 * (poner un numero para exit o crear otra variable)
 	 *
 	 */
-char ls[] = "ls";
 char *ruta = NULL;
 char *leerLinea () {
 	/*
@@ -78,31 +77,6 @@ int parsingLs (char *linea) {
 	return hayArg;
 }
 
-char *detectarComando (char *prompt) {
-	/*
-	 * Funcion que detecta el comando introducido por el usuario
-	 * Parametros:
-	 * *prompt -> cadena de caracteres que contiene lo que introdujo el usuario
-	 * Valor de retorno
-	 * *com -> cadena de caracteres con el comando entresacado
-	 */
-
-	char *com = prompt;
-
-	int i = 0;
-	if (com[i] == ' ' || com[i] == '\0') { // si escribe un espacio al comienzo o no se escribe nada
-		printf("ERROR. Comando no existente\n");
-		com[0] = '\0';						// asignamos null al primer elemento de la cadena para finalizarla
-		return com;							// para salir antes de la funcion
-	}
-	for (; prompt[i] != ' ' ; i++) {
-		com[i] = prompt[i];
-	}
-	com[i] = '\0';
-
-	return com;
-}
-
 int ejecLs (char *linea) {
 
 	int modo = 0;				// variable para definir el comportamiento de ls (si hay o no argumentos)
@@ -124,7 +98,7 @@ int ejecLs (char *linea) {
 		directorio = opendir(ruta);
 		if (directorio == NULL) {
 			puts("Error al abrir en el archivo\n");
-			return 1;
+			return SH_SYSERR;
 		}
 		if (modo == 1) {				// si hay -a imprimir todos los elementos del directorio incluidos los ocultos
 			while ((entrada = readdir(directorio)) != NULL) {
@@ -140,10 +114,10 @@ int ejecLs (char *linea) {
 		}
 		if (closedir(directorio) == -1) {
 			puts ("Error al cerrar el archivo\n");
-			return 1;
+			return SH_SYSERR;
 		}
 	}
-	return 0;
+	return SH_OK;
 }
 
 

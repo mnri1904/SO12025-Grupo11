@@ -17,11 +17,12 @@
 char *fuente;							// puntero que contiene el nombre del archivo fuente
 char *destino;							// puntero que contiene el nombre del archivo de destino
 
-int parsingCp(char *linea) {
+int parsingCp(char *linea, int *arg) {
 	/*
 	 * Funcion que se encarga de parsear el comando cp dividiendo por los parametros (solo se permiten dos)
 	 * Parametros:
 	 * *linea -> puntero a la cadena de caracteres que almacena lo introducido por el usuario
+	 * *arg -> puntero al entero para saber si hay un argumento (v el unico soportado)
 	 * Valor de retorno: la cantidad de parametros utilizados por el usuario
 	 * -1 -> si lo que almacena el token es nulo
 	 * 0 -> no hay parametros (error)
@@ -44,7 +45,20 @@ int parsingCp(char *linea) {
 	}
 	while ((token = strtok_r(NULL, " \t",&cadena)) != NULL) {
 
+		if (token[0] == '-') {
+			contador -= 1;
+			if (*(token +1) == 'v') {
+				*arg = 1;
+			}
+			else {
+				printf("ERROR. Opcion no sportada\n");
+				return 0;							// si el argumento es distinto de v consideramos que no hubieron parametros y todo el comando fue erroneo
+			}
+		}
+
 		contador++;									//cada vez que se entre al while el contador se suma
+
+
 
 		// 1ra llamada dentro del while: token[] = "fuente"
 		if (contador == 1) {
@@ -154,6 +168,17 @@ char *rutaFinal (char *src, char*dst) {
 }
 
 int loopLectEscr(int fd_entrada, int fd_salida) {
+	/*
+	 * Funcion que controla el loop de lectura y escritura
+	 * Parametros":
+	 * fd_entrada -> file descriptor del archivo de entrada/lectura
+	 * fd_salida -> file descriptor del archivo de salida/escritura
+	 * Valor de retorno:
+	 * -1 -> si ocurrio un error intesperado durante el loop de lectura o escritura (perror dice en cual proceso ocurrio el error)
+	 * 0 -> si no ocurrieron errores y el archivo se copio correctamente
+	 *
+	 */
+
 	ssize_t bytesLeidos;							// variable para contar los bytes leidos de fuente
 	char buffer[TAMBUFF];							// declaramos un vector que actua como buffer
 
@@ -212,27 +237,26 @@ int ejecCp(char *prompt) {
 	 * Valor de retorno:
 	 * 0 -> exito o linea vacia
 	 * 1 -> error de uso de parametros
-	 * 1 -> error de sistema/archivos
-	 * 3 -> comando no encontrado
+	 * 2 -> error de sistema/archivos
+	 * 127 -> comando no encontrado
 	 *
 	 */
 
-	int nerror; // variable para distinguir los errores
 
-
-	int validador = 0; // variable para validar el uso de cp (solo puede ser 2)
-	validador = parsingCp(prompt);
+	int validador = 0; 	// variable para validar el uso de cp (solo puede ser 2)
+	int verbose = 0;			// entero para indicar si el usuario uso -v (unico argumento soportado)
+	validador = parsingCp(prompt, &verbose);
 
 	if (validador == -1){				// linea vacia/token NULL pasamos
-		return 0;
+		return SH_OK;
 	}
 	else if (validador < 2){
 		printf("Error. Cantidad de parametros insuficientes(%d)\n", validador);
-		return 1;
+		return SH_USAGE;
 	}
 	else if(validador > 2) {
 		printf("Error. Demasiados parametros (%d)\n", validador);
-		return 1;
+		return SH_USAGE;
 
 	}
 	else {
@@ -250,7 +274,7 @@ int ejecCp(char *prompt) {
 			if (fd_in == -1) {
 				fprintf(stderr, "ERROR. No se pudo abrir el archivo %s\n", fuente);
 				perror("open");
-				return -1;
+				return SH_SYSERR;
 			}
 
 			int veriDestino;	// variable para verificar si el archivo DESTINO EXISTE y de que tipo es
@@ -266,7 +290,7 @@ int ejecCp(char *prompt) {
 
 				if (rutaNueva == NULL) {
 					close(fd_in);
-					return -1;
+					return SH_SYSERR;
 				}
 
 				/*Intentamos abrir el archivo*/
@@ -278,17 +302,30 @@ int ejecCp(char *prompt) {
 					perror("open");
 					close(fd_in);
 					free(rutaNueva);
-					return -1;
+					return SH_SYSERR;
 				}
 				else {
 
 					/*Si el archivo abre podemos leer y escrbir*/
 
 					int copiadoCorrecto = loopLectEscr(fd_in, fd_out);
-					close (fd_in);
-					close(fd_out);
-					free(rutaNueva);
-					return copiadoCorrecto;
+
+					if (copiadoCorrecto == 0) {
+						if (verbose == 1) {
+							printf("'%s' -> '%s'\n",fuente,destino);
+						}
+						close (fd_in);
+						close(fd_out);
+						free(rutaNueva);
+						return SH_OK;
+					}
+					else {
+						close (fd_in);
+						close(fd_out);
+						free(rutaNueva);
+						return SH_SYSERR;
+					}
+
 				}
 
 
@@ -302,13 +339,23 @@ int ejecCp(char *prompt) {
 					fprintf(stderr, "ERROR. No se pudo abrir el archivo %s\n", destino);
 					perror("open");
 					close(fd_in);
-					return -1;
+					return SH_SYSERR;
 				}
 				else {
 					int copiadoCorrecto = loopLectEscr(fd_in, fd_out);
-					close(fd_in);
-					close(fd_out);
-					return copiadoCorrecto;
+					if (copiadoCorrecto == 0) {
+						if (verbose == 1) {
+							printf("'%s' -> '%s'\n",fuente,destino);
+						}
+						close(fd_in);
+						close(fd_out);
+						return SH_OK;
+					}
+					else {
+						close(fd_in);
+						close(fd_out);
+						return SH_SYSERR;
+					}
 				}
 			}
 			else if (veriDestino == -1) {
@@ -320,12 +367,22 @@ int ejecCp(char *prompt) {
 					fprintf(stderr, "ERROR. No se pudo crear/abrir el archivo %s\n", destino);
 					perror("open");
 					close(fd_in);
-					return -1;
+					return SH_SYSERR;
 				}
 				int copiadoCorrecto = loopLectEscr(fd_in, fd_out);
-				close(fd_out);
-				close(fd_in);
-				return copiadoCorrecto;
+				if (copiadoCorrecto == 0) {
+					if (verbose == 1) {
+						printf("'%s' -> '%s'\n",fuente,destino);
+					}
+					close(fd_out);
+					close(fd_in);
+					return SH_OK;
+				}
+				else {
+					close(fd_out);
+					close(fd_in);
+					return SH_SYSERR;
+				}
 			}
 			else if (veriDestino == -2) {
 
@@ -333,7 +390,7 @@ int ejecCp(char *prompt) {
 
 				fprintf(stderr, "ERROR. No se puede acceder al destino %s\n", destino);
 				close(fd_in);
-				return -1;
+				return SH_SYSERR;
 			}
 			else {
 
@@ -349,7 +406,7 @@ int ejecCp(char *prompt) {
 					destino, tipoArchivo(st.st_mode));
 		    	}
 					    	close(fd_in);
-					    return -1;
+					    return SH_SYSERR;
 			}
 		}
 		else if (veriFuente == 1) {
@@ -357,7 +414,7 @@ int ejecCp(char *prompt) {
 			/*Si FUENTE es un DIRECTORIO: ERROR*/
 
 			fprintf(stderr, "ERROR. El archivo %s proporcionado como fuente es un directorio, no un archivo\n",fuente);
-			return -1;
+			return SH_USAGE;
 		}
 
 		else if (veriFuente == -1) {
@@ -365,7 +422,7 @@ int ejecCp(char *prompt) {
 			/*Si FUENTE NO EXISTE: ERROR*/
 
 			fprintf(stderr, "ERROR. El archivo %s proporcionado como fuente no existe\n",fuente);
-			return -1;
+			return SH_USAGE;
 		}
 
 		else if (veriFuente == -2) {
@@ -373,7 +430,7 @@ int ejecCp(char *prompt) {
 			/*Si FUENTE EXISTE pero NO SE PUEDE ACCEDER: ERROR*/
 
 			fprintf(stderr, "ERROR. No se puede acceder al archivo %s proporcionado como fuente\n",fuente);
-			return -1;
+			return SH_SYSERR;
 		}
 		else {
 
@@ -386,9 +443,9 @@ int ejecCp(char *prompt) {
 			} else {
 				fprintf(stderr, "ERROR. Fuente %s no soportada: es %s\n", fuente, tipoArchivo(st.st_mode));
 			}
-			return -1;
+			return SH_SYSERR;
 		}
 	}
-	return 0;
+	return SH_OK;
 }
 
