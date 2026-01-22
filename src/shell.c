@@ -10,6 +10,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <errno.h>
+#include <unistd.h>
 #include "shellheader.h"
 
 static int esLineaVacia(const char *linea) {
@@ -28,14 +31,18 @@ static int esLineaVacia(const char *linea) {
     return 1;
 }
 
-/*
-void logExit(char *prompt){
-}
-*/
 
+//REPL: READ->EVALUATE->PRINT->LOOP
 int main() {
-	//REPL: READ->EVALUATE->PRINT->LOOP
+	
 	int nerror = SH_OK;		// variable para distinguir errores por numeros (codigos) distintos
+	int exito;
+	const char *usuario;
+	usuario = getlogin();
+	if (!usuario){
+		usuario = "desconocido";
+	}
+	
 	while(1) {
 		fprintf(stdout, "shell:~$ ");
 		fflush(stdout);
@@ -54,6 +61,7 @@ int main() {
 		if (!duplicado) {
 			perror("strdup");
 			nerror = SH_SYSERR;
+			logError(usuario, prompt, strerror(errno));
 			free(prompt);
 			continue;
 		}
@@ -73,12 +81,21 @@ int main() {
 		}
 		else if (!(strcmp(comando, "cd"))) {
 			nerror = ejecCd(cadena);
+			if (nerror != SH_OK){
+				logError(usuario, prompt, strerror(errno));
+			}
 		}
 		else if ((strcmp(comando, "cp") == 0)) {
 			nerror = ejecCp(prompt);
+			if (nerror != SH_OK){
+				logError(usuario, prompt, strerror(errno));
+			}
 		}
 		else if (!(strcmp(comando, "mkdir"))) {
 			nerror = ejecMKDIR(cadena);
+			if (nerror != SH_OK){
+				logError(usuario, prompt, strerror(errno));
+			}
 		}
 		else if (!(strcmp(comando, "echo"))) {
 			nerror = ejecECHO(cadena);
@@ -87,26 +104,28 @@ int main() {
 			nerror = ejecPWD();
 		}
 		else if (!strncmp(comando, "exit", 4)){
-			//logExit(prompt);									//hacer logExit. capaz conviene hacer logExit en este .c
+			logAccion(usuario, "exit", 1, "cierre limpio");
 			free(duplicado);
 			free(prompt);
 			break;
 		}	
 		else {
 			fprintf(stderr, "ERROR. Comando no encontrado: %s\n", comando);
+			logError(usuario, prompt, "comando no encontrado");
 			nerror = SH_NOTFOUND;
 		}
+
+		if (nerror == SH_OK) {
+			exito =1;
+		    logAccion(usuario, prompt, exito, "comando ejecutado");
+		} else {
+		    exito = 0;
+		    logAccion(usuario, prompt, exito, "comando fallido");
+		}
+		
         free (duplicado);
         free (prompt);
 	}
 	return nerror;
 }
-
-
-
-
-
-
-
-
 
