@@ -16,6 +16,10 @@ enum {
     SH_NOTFOUND = 127  // comando no encontrado
 };
 
+/***************************************************************logs*************************************************************************/
+void logAccion(const char *usuario, const char *comando, int exito, const char *mensaje);
+void logError(const char *usuario, const char *comando, const char *mensaje_error);
+
 /***************************************************************ls*************************************************************************/
 char *leerLinea();
 int parsingLs(char *linea);
