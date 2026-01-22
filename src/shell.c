@@ -28,7 +28,13 @@ static int esLineaVacia(const char *linea) {
     return 1;
 }
 
+/*
+void logExit(char *prompt){
+}
+*/
+
 int main() {
+	//REPL: READ->EVALUATE->PRINT->LOOP
 	int nerror = SH_OK;		// variable para distinguir errores por numeros (codigos) distintos
 	while(1) {
 		fprintf(stdout, "shell:~$ ");
@@ -65,9 +71,27 @@ int main() {
 		else if ((strcmp(comando, "ls") == 0)) {
 			nerror = ejecLs(prompt);
 		}
+		else if (!(strcmp(comando, "cd"))) {
+			nerror = ejecCd(cadena);
+		}
 		else if ((strcmp(comando, "cp") == 0)) {
 			nerror = ejecCp(prompt);
 		}
+		else if (!(strcmp(comando, "mkdir"))) {
+			nerror = ejecMKDIR(cadena);
+		}
+		else if (!(strcmp(comando, "echo"))) {
+			nerror = ejecECHO(cadena);
+		}
+		else if (!(strncmp(comando, "pwd", 3))) {
+			nerror = ejecPWD();
+		}
+		else if (!strncmp(comando, "exit", 4)){
+			//logExit(prompt);									//hacer logExit. capaz conviene hacer logExit en este .c
+			free(duplicado);
+			free(prompt);
+			break;
+		}	
 		else {
 			fprintf(stderr, "ERROR. Comando no encontrado: %s\n", comando);
 			nerror = SH_NOTFOUND;
