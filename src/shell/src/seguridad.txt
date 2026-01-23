@@ -1,0 +1,28 @@
+===============================================================================================================
+
+					5 CONSEJOS DE SEGURIDAD EN LINUX 
+
+================================================================================================================
+1) Mantén el sistema actualizado
+   - Usa el gestor de paquetes de tu distro (apt, dnf, pacman) para instalar parches de seguridad con regularidad.
+   - Ejemplos: sudo apt update && sudo apt upgrade | sudo dnf upgrade
+
+2) Usa el principio de mínimo privilegio
+   - Trabaja como usuario normal y usa sudo solo cuando sea necesario.
+   - Evita iniciar sesión como root si no es imprescindible.
+
+3) Protege el acceso remoto (SSH)
+   - Deshabilita el acceso de root por SSH y usa autenticación por llave pública.
+   - Cambia el puerto solo como medida adicional, y limita intentos con fail2ban si aplica.
+   - Revisa /etc/ssh/sshd_config (PermitRootLogin no, PasswordAuthentication no).
+
+4) Configura un firewall básico
+   - Permite solo los puertos/servicios que realmente necesitas.
+   - UFW (Ubuntu/Debian): sudo ufw enable; sudo ufw allow OpenSSH
+   - firewalld (RHEL/Fedora): sudo firewall-cmd --add-service=ssh --permanent; sudo firewall-cmd --reload
+
+5) Revisa permisos y evita ejecutar scripts “a ciegas”
+   - Verifica permisos de archivos sensibles (por ejemplo, claves en ~/.ssh).
+   - Desconfía de comandos copiados de Internet: lee, entiende y valida antes de ejecutar.
+   - Usa firmas/checksums cuando descargues binarios o scripts.
+   
