@@ -8,7 +8,7 @@
 #ifndef SHELLHEADER_H_
 #define SHELLHEADER_H_
 
-
+#define _POSIX_C_SOURCE 200809L
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -73,4 +73,6 @@ int ejecMKDIR(char *argumentos);
 /***************************************************************logs*************************************************************************/
 void logAccion(const char *usuario, const char *comando, int exito, const char *mensaje);
 void logError(const char *usuario, const char *comando, const char *mensaje_error);
+/***************************************************************clear*************************************************************************/
+int ejecClear(char *prompt);
 #endif /* SHELLHEADER_H_ */

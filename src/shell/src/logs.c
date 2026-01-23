@@ -19,6 +19,13 @@ static void obtenerTimestamp(char *buffer, size_t tam) {
 }
 
 void logAccion(const char *usuario, const char *comando, int exito, const char *mensaje){
+	/*
+	 * Funcion que escribe en el archivo correspondiente a los comandos ejecutados con exito
+	 * Parametros:
+	 * *usuario -> puntero a cadena de caracteres con el nombre del usuario
+	 * *comando -> puntero a cadena de caracteres con el nombre del comando ejecutado
+	 * *mensaje_error -> puntero a cadena de caracteres que contiene el mensaje
+	 */
     FILE *f;
     char tiempo[64];
 
@@ -34,6 +41,13 @@ void logAccion(const char *usuario, const char *comando, int exito, const char *
 }
 
 void logError(const char *usuario, const char *comando, const char *mensaje_error){
+	/*
+	 * Funcion que escribe en el archivo correspondiente a los errores
+	 * Parametros:
+	 * *usuario -> puntero a cadena de caracteres con el nombre del usuario
+	 * *comando -> puntero a cadena de caracteres con el nombre del comando ejecutado
+	 * *mensaje_error -> puntero a cadena de caracteres que contiene el mensaje de error
+	 */
     FILE *f;
     char tiempo[64];
 

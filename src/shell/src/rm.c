@@ -76,6 +76,7 @@ void log_sistema_error_min(char *msg) {
 	 */
     FILE *f = fopen("/var/log/shell/sistema_error.log", "a");	// va a fallar si no se es usuario root
     if (!f) {
+    	fprintf(stderr, "ERROR. No eres usuario root o no tienes permisos suficientes. Si necesitas ayuda ejecuta rm ?");
     	return; 										// si no existe el directorio
     }
     fprintf(f, "%s\n", msg);

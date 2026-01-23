@@ -27,6 +27,16 @@ int contarEspacios (char *cadena) {
 }
 
 int parsingGrep(char *linea) {
+	/*
+	 * Funcion que se encarga de parsear la linea cuando el usuario ejecuta grep
+	 * Parametros:
+	 * *linea -> cadena de caracteres que contiene lo ejecutado por el usuario
+	 * Valor de retorno:
+	 * 1 (SH_USAGE) -> Si hay error de uso
+	 * 2 (SH_SYSERR) -> si hay error de sistema
+	 * 0 (SH_OK) -> si no hay error
+	 */
+
 	char *p = linea;					// puntero que apunta a linea
 	patron = NULL;
 	arch = NULL;
@@ -115,9 +125,9 @@ int ejecGrep (char *prompt) {
     if (nerror != SH_OK){
     	return nerror;
     }
-    if (patron == NULL) return SH_USAGE;  // no hay patrón => uso inválido
+    if (patron == NULL) return SH_USAGE;  // no hay patrón -> uso inválido
 
-    FILE *a = stdin;
+    FILE *a = stdin;						// puntero al archivo
     int fd = -1;
 
     if (arch != NULL) {
@@ -136,7 +146,7 @@ int ejecGrep (char *prompt) {
     size_t tam = 0;
     ssize_t n;
 
-    while ((n = getline(&linea, &tam, a)) != -1) {
+    while ((n = getline(&linea, &tam, a)) != -1) {			// se obtiene la linea que se mostrara en la terminal
         if (strstr(linea, patron) != NULL) {
             fputs(linea, stdout);
         }

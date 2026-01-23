@@ -81,7 +81,7 @@ int main(void) {
 
     while (1) {
     	actualizarVariableEnt();
-    	fprintf(stdout, "sosh:~$ ");
+    	fprintf(stdout, "%s",variableEnt);
         fflush(stdout);
 
         char *prompt = leerLinea();
@@ -196,15 +196,11 @@ int main(void) {
             char *arg2 = strtok_r(NULL, " \t", &cadena);
 
             if (arg1 && strcmp(arg1, "?") == 0 && arg2 == NULL) {
-                nerror = ayudaShell("src/guia.txt");  // si tu ayudaShell recibe prompt, cambia esto por ayudaShell(prompt)
+                nerror = ayudaShell("/usr/share/sosh/guia.txt");
             } else {
                 nerror = SH_USAGE;
             }
         }
-        else if (strcmp(comando, "shell?") == 0) { // por si aún lo usás sin espacio
-            nerror = ayudaShell("src/guia.txt");                 // idem nota de notice arriba
-        }
-
         /* ---------------------- exit y exit ? ---------------------- */
         else if (strcmp(comando, "exit") == 0) {
             char *arg1 = strtok_r(NULL, " \t", &cadena);
@@ -230,16 +226,28 @@ int main(void) {
             }
         }
         else if (strcmp(comando, "seguridad") == 0) {
-        	nerror = ayudaShell("src/seguridad.txt");
+        	nerror = ayudaShell("/usr/share/sosh/seguridad.txt");
         }
         else if (strcmp(comando, "aprender") == 0) {
-        	nerror = ayudaShell("src/usos.txt");
+        	nerror = ayudaShell("/usr/share/sosh/usos.txt");
         }
         else if (strcmp(comando, "historia") == 0) {
-        	nerror = ayudaShell("src/historia.txt");
+        	nerror = ayudaShell("/usr/share/sosh/historia.txt");
         }
         else if (strcmp(comando, "distros") == 0) {
-        	nerror = ayudaShell("src/distros.txt");
+        	nerror = ayudaShell("/usr/share/sosh/distros.txt");
+        }
+        else if (strcmp(comando, "clear") == 0) {
+            char *arg1 = strtok_r(NULL, " \t", &cadena);
+            char *arg2 = strtok_r(NULL, " \t", &cadena);
+
+            if (arg1 && strcmp(arg1, "?") == 0 && arg2 == NULL) {
+                nerror = ayudaImpresion(170,173);
+            } else if (arg1 != NULL) {   // clear no lleva operandos
+                nerror = SH_USAGE;
+            } else {
+                nerror = ejecClear(prompt);
+            }
         }
 
         /* ---------------------- comando desconocido ---------------------- */

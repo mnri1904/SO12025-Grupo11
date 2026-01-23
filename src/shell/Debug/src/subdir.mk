@@ -7,6 +7,7 @@ C_SRCS += \
 ../src/ayudas.c \
 ../src/cat.c \
 ../src/cd.c \
+../src/clear.c \
 ../src/cp.c \
 ../src/echo.c \
 ../src/grep.c \
@@ -21,6 +22,7 @@ C_DEPS += \
 ./src/ayudas.d \
 ./src/cat.d \
 ./src/cd.d \
+./src/clear.d \
 ./src/cp.d \
 ./src/echo.d \
 ./src/grep.d \
@@ -35,6 +37,7 @@ OBJS += \
 ./src/ayudas.o \
 ./src/cat.o \
 ./src/cd.o \
+./src/clear.o \
 ./src/cp.o \
 ./src/echo.o \
 ./src/grep.o \
@@ -58,7 +61,7 @@ src/%.o: ../src/%.c src/subdir.mk
 clean: clean-src
 
 clean-src:
-	-$(RM) ./src/ayudas.d ./src/ayudas.o ./src/cat.d ./src/cat.o ./src/cd.d ./src/cd.o ./src/cp.d ./src/cp.o ./src/echo.d ./src/echo.o ./src/grep.d ./src/grep.o ./src/logs.d ./src/logs.o ./src/ls.d ./src/ls.o ./src/mkdir.d ./src/mkdir.o ./src/pwd.d ./src/pwd.o ./src/rm.d ./src/rm.o ./src/shell.d ./src/shell.o
+	-$(RM) ./src/ayudas.d ./src/ayudas.o ./src/cat.d ./src/cat.o ./src/cd.d ./src/cd.o ./src/clear.d ./src/clear.o ./src/cp.d ./src/cp.o ./src/echo.d ./src/echo.o ./src/grep.d ./src/grep.o ./src/logs.d ./src/logs.o ./src/ls.d ./src/ls.o ./src/mkdir.d ./src/mkdir.o ./src/pwd.d ./src/pwd.o ./src/rm.d ./src/rm.o ./src/shell.d ./src/shell.o
 
 .PHONY: clean-src
 

@@ -13,13 +13,6 @@
  DECLARACION DE VARIABLES GLOBALES
  ===========================================================================
  */
-	/*
-	 * Valores de error
-	 * 0 -> no hay error, el while sigue
-	 * 1 -> error de abrir/cerrar directorio, el while sigue
-	 * (poner un numero para exit o crear otra variable)
-	 *
-	 */
 char *ruta = NULL;
 char *leerLinea () {
 	/*

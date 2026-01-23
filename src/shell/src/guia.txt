@@ -164,4 +164,15 @@ Ejemplos de uso:
 11. whoami
 Descripción: imprime en pantalla el nombre de usuario.
 Ejemplo de uso:
-whoami
+-whoami
+
+
+12. clear
+Descripción: limpia la pantalla de la terminal: borra el contenido visible y deja el cursor arriba para que sigas escribiendo, sin borrar el historial real de la sesión.
+Ejemplo de uso:
+- clear
+
+
+
+
+
