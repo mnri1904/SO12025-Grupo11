@@ -1,0 +1,45 @@
+===================================================================================================
+
+			HISTORIA DE LINUX 
+
+===================================================================================================
+Linux es, en esencia, un “kernel” (el núcleo del sistema operativo) que, combinado con herramientas y librerías de espacio de usuario, da lugar a sistemas operativos completos conocidos como “distribuciones”.
+
+1) Orígenes: Unix, GNU y la necesidad de un kernel libre
+- En los años 70, Unix se vuelve una referencia para sistemas multiusuario y multitarea.
+- En 1983, Richard Stallman inicia el proyecto GNU con el objetivo de crear un sistema tipo Unix completamente libre.
+- GNU avanzó mucho en compiladores, librerías y utilidades, pero durante años le faltó un kernel estable y ampliamente adoptado (Hurd existía, pero maduró lentamente).
+
+2) Nace Linux (1991)
+- En 1991, Linus Torvalds, entonces estudiante, comienza a desarrollar un kernel para su PC como proyecto personal, inspirado por MINIX (un sistema educativo).
+- Publica el código y anuncia el proyecto en foros de la época, recibiendo rápidamente aportes de otras personas.
+
+3) Adopción de la GPL y crecimiento comunitario (1992)
+- En 1992, Linux se relicencia bajo la GNU GPL, lo que facilita su uso, modificación y redistribución, promoviendo un ecosistema colaborativo.
+- Esto acelera el desarrollo: más gente puede contribuir y más organizaciones pueden adoptarlo con un marco legal claro.
+
+4) Surgen las distribuciones (años 90)
+- Linux empieza a combinarse de manera práctica con el “userland” de GNU (bash, coreutils, gcc, glibc, etc.).
+- Aparecen distribuciones que empaquetan kernel + utilidades + instalador + repositorios, como Slackware (1993), Debian (1993) y posteriormente Red Hat (1994).
+- En esta etapa se consolidan conceptos clave: gestores de paquetes, repositorios, configuraciones estandarizadas y comunidades de soporte.
+
+5) Consolidación en servidores y empresas (2000s)
+- Linux se hace muy fuerte en servidores por estabilidad, rendimiento, seguridad y costo.
+- Se vuelve común en centros de datos, hosting, bases de datos y servicios web.
+- Muchas empresas contribuyen al kernel y al ecosistema (drivers, sistemas de archivos, redes, virtualización).
+
+6) Virtualización, nube y contenedores (2010s en adelante)
+- Linux se convierte en la base de gran parte de la computación en la nube y la virtualización moderna.
+- Tecnologías como KVM, cgroups y namespaces habilitan contenedores a gran escala.
+- Herramientas como Docker y orquestadores como Kubernetes impulsan un uso masivo de Linux en infraestructura.
+
+7) Linux en el bolsillo: Android y el mundo embebido
+- En 2008 se lanza Android, que utiliza el kernel Linux; esto dispara la presencia de Linux en miles de millones de dispositivos.
+- Linux también domina en routers, TVs, IoT y sistemas embebidos por su flexibilidad y soporte de hardware.
+
+8) Situación actual
+- Hoy el kernel Linux se desarrolla con contribuciones de una comunidad global (individuos, universidades y grandes empresas).
+- Está presente en supercomputación, servidores, cloud, contenedores, redes, dispositivos móviles y sistemas críticos.
+- Las distribuciones siguen evolucionando (Debian/Ubuntu, Fedora/RHEL, Arch, SUSE, etc.), con enfoques distintos en estabilidad, novedad, soporte empresarial o filosofía.
+
+En resumen: Linux surge como un kernel creado en 1991, crece gracias al modelo de software libre (GPL) y se convierte, junto con el ecosistema GNU y las distribuciones, en una de las plataformas más importantes de la informática moderna.

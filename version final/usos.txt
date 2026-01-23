@@ -1,0 +1,27 @@
+===================================================================================================
+
+			5 CONSEJOS PARA USO GENERAL DE LINUX 
+
+===================================================================================================
+CONSEJOS PARA USO GENERAL DE LINUX (5)
+
+1) Aprende a moverte por la terminal con confianza
+   - cd, ls, pwd, mkdir, rm, cp, mv, cat, less, head, tail
+   - Tip: usa tab para autocompletar y Ctrl+R para buscar en el historial.
+
+2) Domina la ayuda integrada y la documentación
+   - man <comando>, <comando> --help, y /usr/share/doc cuando exista.
+   - Ejemplo: man rsync; ls --help
+
+3) Gestiona procesos y recursos
+   - ps, top/htop, free -h, df -h, du -sh, kill/killall
+   - Tip: “df -h” para espacio de disco y “free -h” para memoria.
+
+4) Usa bien el gestor de paquetes
+   - Instala, actualiza y elimina software desde repositorios oficiales.
+   - Ejemplos: sudo apt install <paquete> | sudo dnf install <paquete>
+
+5) Aprovecha redirecciones y tuberías
+   - >, >>, 2>, |, tee para construir flujos de trabajo potentes.
+   - Ejemplos: dmesg | less ; comando | tee salida.log
+   
