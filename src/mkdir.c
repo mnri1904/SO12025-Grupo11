@@ -1,3 +1,4 @@
+// Hecho por: Ariel Gaona
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
