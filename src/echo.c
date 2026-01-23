@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+// hecho por: Alexandre Avalos
 int ejecECHO(char *argumentos) {
     if (argumentos == NULL) {
         printf("\n");
