@@ -2,7 +2,7 @@
  * cat.c
  *
  *  Created on: 20 ene. 2026
- *      Author: lp1
+ *      Author: Marcelo Romero
  */
 
 #include <stdio.h>
