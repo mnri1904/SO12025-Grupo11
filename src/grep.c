@@ -1,10 +1,4 @@
-/*
- * grep.c
- *
- *  Created on: 21 ene. 2026
- *
- */
-
+// Hecho por: Ariel Gaona
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
