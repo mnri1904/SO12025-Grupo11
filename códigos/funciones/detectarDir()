@@ -1,3 +1,4 @@
+// hecho por: Marcelo Romero
 char *detectarDir(char *prompt) {
 	printf("Entramos a detectarDir\n");
 	/*
