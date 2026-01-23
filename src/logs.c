@@ -1,3 +1,4 @@
+// Hecho por: Alexandre Avalos
 #include <stdio.h>
 #include <time.h>
 #include <sys/stat.h>
