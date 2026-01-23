@@ -1,3 +1,4 @@
+// hecho por: Marcelo Romero
 char *detectarComando (char *prompt) {
 	/*
 	 * Funcion que detecta el comando introducido por el usuario
