@@ -1,0 +1,285 @@
+Resumen de tests
+
+1. Fecha: 12/10/2025 | Test: Ping de conectividad | Páginas: 4
+   Comandos ejecutados:
+     - Ping -c 3 8.8.8.8
+   Resumen: Validar conectividad de red (ICMP) hacia un host público.
+
+2. Fecha: 19/10/2025 | Test: Verificación MD5 de fuentes | Páginas: 15
+   Comandos ejecutados:
+     - md5sum -c md5sums
+   Resumen: Validar integridad de tarballs descargados contra checksums del libro. Se registran problemas: archivos faltantes o checksums que no coinciden, y errores de permisos al intentar guardar logs fuera del directorio de trabajo; además se menciona un mirror inaccesible.
+
+3. Fecha: 21/10/2025 | Test: Verificación MD5 de fuentes | Páginas: 16
+   Comandos ejecutados:
+     - md5sum -c md5sums | tee md5-check.log
+     - md5sum -c md5sums | tee md5-check-final.log
+   Resumen: Validar integridad de tarballs descargados contra checksums del libro. Se ejecuta nuevamente la verificación guardando logs con tee; se arma un listado de paquetes faltantes y se re-descargan; verificación final con grep reporta 'Todo OK' si no hay discrepancias. Verificación final reporta 'Todo OK'.
+
+4. Fecha: 6/11/2025 | Test: Sanity checks de toolchain | Páginas: 24, 25, 26
+   Comandos ejecutados:
+     - verbose &> dummy.log readelf -l a.out | grep ': /lib'
+     - 1. grep -E -o "$LFS/lib.*/S?crt[1in].*succeeded" dummy.log
+     - 2. grep -B3 "^ $LFS/usr/include" dummy.log
+     - 1. grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
+     - 1. grep "/lib.*/libc.so.6 " dummy.log
+     - 2. grep found dummy.log
+     - 1. rm -v a.out dummy.log
+     - $LFS_TGT-gcc -x c dummy.c -o a.out -v -Wl,--verbose &> dummy.log
+     - readelf -l a.out | grep ': /lib'
+   Resumen: Verificar rutas de enlazado y que el ejecutable use el enlazador/libc esperados. Se revisan crt*.o, rutas de include, SEARCH paths del linker y referencias a libc.so.6 mediante dummy.log.
+
+5. Fecha: 30/12/2025 | Test: Glibc-2.42: suite de tests (make check) | Páginas: 97, 98
+   Comandos ejecutados:
+     - make check
+     - grep "Timed out" $(find -name \*.out)
+     - grep '^FAIL:' $(find -name \*.sum) | sort -u
+     - TIMEOUTFACTOR=30 make -j1 test t=nptl/tst-mutex10
+     - TIMEOUTFACTOR=30 make -j1 test t=nptl/tst-thread-affinity-sched
+     - TIMEOUTFACTOR=30 make -j1 test t=stdlib/test-bz22786
+     - TIMEOUTFACTOR=30 make -j1 test t=stdlib/test-cxa_atexit-race2
+     - TIMEOUTFACTOR=30 make -j1 test t=stdlib/test-bz22786
+     - TIMEOUTFACTOR=30 make -j1 test t=nptl/tst-mutex10
+     - TIMEOUTFACTOR=30 make -j1 test t=nptl/tst-thread-affinity-sched
+     - TIMEOUTFACTOR=30 make -j1 test t=stdio-common/test-popen
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. Se re-ejecutan tests individuales ajustando TIMEOUTFACTOR. Se buscan time-outs en salidas de tests. Se listan FAILs desde archivos *.sum. El documento menciona 6 FAIL(s) iniciales. Se observan fallos por /bin/sh inexistente; se sugiere corregir enlaces/symlinks. Se observan fallos por /bin/cat inexistente; se sugiere convertir /bin y /sbin en symlinks.
+
+6. Fecha: 1/01/2026 | Test: Zlib-1.3.1: suite de tests (make check) | Páginas: 105
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+7. Fecha: 1/01/2026 | Test: Xz-5.8.1: suite de tests (make check) | Páginas: 111
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+8. Fecha: 1/01/2026 | Test: Lz4-1.10: suite de tests (make check) | Páginas: 114
+   Comandos ejecutados:
+     - make -j1 check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+9. Fecha: 1/01/2026 | Test: Zstd-1.5.7: suite de tests (make check) | Páginas: 117
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+10. Fecha: 2/01/2025 | Test: File-5.46: suite de tests (make check) | Páginas: 119
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+11. Fecha: 2/01/2025 | Test: M4-1.4.20: suite de tests (make check) | Páginas: 125
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+12. Fecha: 2/01/2025 | Test: Flex-2.6.4: suite de tests (make check) | Páginas: 131
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+13. Fecha: 2/01/2025 | Test: DejaGNU-1.6.3: suite de tests (make check) | Páginas: 143
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+14. Fecha: 5/01/2026 | Test: Binutils-2.45: suite de tests (make check) | Páginas: 148
+   Comandos ejecutados:
+     - make -k check
+     - grep '^FAIL:' $(find -name '*.log')
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. Se listan FAILs desde archivos *.sum.
+
+15. Fecha: 5/01/2026 | Test: GMP: suite de tests (make check) | Páginas: 152
+   Comandos ejecutados:
+     - make check 2>&1 | tee gmp-check-log
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+16. Fecha: 5/01/2026 | Test: MPFR: suite de tests (make check) | Páginas: 155
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. El documento indica que pasaron 198 tests.
+
+17. Fecha: 5/01/2026 | Test: MPC-1.3.1: suite de tests (make check) | Páginas: 159
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+18. Fecha: 5/01/2026 | Test: Attr-2.5.2: suite de tests (make check) | Páginas: 162
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. Se indica FAIL asociado a SELinux (seclabel/security.selinux).
+
+19. Fecha: 5/01/2026 | Test: Acl-2.3.2: suite de tests (make check) | Páginas: 165
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+20. Fecha: 5/01/2026 | Test: Libxcrypt-4.4.38: suite de tests (make check) | Páginas: 170
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+21. Fecha: 6/01/2026 | Test: GCC-15.2.0: suite de tests (make check) | Páginas: 177, 178, 180, 181
+   Comandos ejecutados:
+     - su tester -c "PATH=$PATH make -k check"
+     - ../contrib/test_summary | grep -A7 Summ
+     - echo 'int main(){}' | cc -x c - -v -Wl,--verbose &> dummy.log readelf -l a.out |
+     - grep -E -o '/usr/lib.*/S?crt[1in].*succeeded' dummy.log
+     - grep -B4 '^ /usr/include' dummy.log
+     - grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
+     - grep "/lib.*/libc.so.6 " dummy.log
+     - grep found dummy.log
+     - rm -v a.out dummy.log
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. Ejecutado como usuario no privilegiado (tester). Se genera un resumen de resultados con test_summary.
+
+22. Fecha: 6/01/2026 | Test: Sed-4.9: suite de tests (make check) | Páginas: 186
+   Comandos ejecutados:
+     - su tester -c "PATH=$PATH make check"
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. Ejecutado como usuario no privilegiado (tester).
+
+23. Fecha: 6/01/2026 | Test: Psmisc-23.7: suite de tests (make check) | Páginas: 190
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+24. Fecha: 7/01/2026 | Test: Gettext-0.26: suite de tests (make check) | Páginas: 193
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+25. Fecha: 7/01/2026 | Test: Bison-3.8.2: suite de tests (make check) | Páginas: 196
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+26. Fecha: 7/01/2026 | Test: Grep-312: suite de tests (make check) | Páginas: 199
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+27. Fecha: 7/01/2026 | Test: Bash-5.3: suite de tests (make tests) | Páginas: 203
+   Comandos ejecutados:
+     - spawn make tests
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+28. Fecha: 7/01/2026 | Test: Libtool-2.5.4: suite de tests (make check) | Páginas: 207
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+29. Fecha: 7/01/2026 | Test: GDBM-1.26: suite de tests (make check) | Páginas: 210, 212
+   Comandos ejecutados:
+     - make check
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+30. Fecha: 8/01/2026 | Test: GDBM-1.26: suite de tests (make check) | Páginas: 215, 218
+   Comandos ejecutados:
+     - make check
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+31. Fecha: 8/01/2026 | Test: Less-679: suite de tests (make check) | Páginas: 221
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+32. Fecha: 8/01/2026 | Test: Intltool-0.51.0: suite de tests (make check) | Páginas: 229
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+33. Fecha: 8/01/2026 | Test: Autoconf-2.72: suite de tests (make check) | Páginas: 232
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+34. Fecha: 8/01/2026 | Test: Automake-1.18.1: suite de tests (make check) | Páginas: 234
+   Comandos ejecutados:
+     - make -j$(($(nproc)>4?$(nproc):4)) check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+35. Fecha: 9/01/2026 | Test: Libelf: suite de tests (make check) | Páginas: 241, 243
+   Comandos ejecutados:
+     - make check
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+36. Fecha: 9/01/2026 | Test: Coreutils-9.7: suite de tests (make check) | Páginas: 259
+   Comandos ejecutados:
+     - make NON_ROOT_USERNAME=tester check-root
+     - su tester -c "PATH=$PATH make -k RUN_EXPENSIVE_TESTS=yes check" \
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. Ejecutado como usuario no privilegiado (tester). Incluye tests costosos (RUN_EXPENSIVE_TESTS=yes). Incluye tests que requieren root y/o división root/no-root.
+
+37. Fecha: 9/01/2026 | Test: Diffutils-3.12: suite de tests (make check) | Páginas: 262
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+38. Fecha: 9/01/2026 | Test: Gawk-5.3.2: suite de tests (make check) | Páginas: 265
+   Comandos ejecutados:
+     - su tester -c "PATH=$PATH make check"
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. Ejecutado como usuario no privilegiado (tester).
+
+39. Fecha: 10/01/2026 | Test: Findutils-4.10.0: suite de tests (make check) | Páginas: 269
+   Comandos ejecutados:
+     - su tester -c "PATH=$PATH make check"
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. Ejecutado como usuario no privilegiado (tester).
+
+40. Fecha: 10/01/2026 | Test: Groff-1.23.0: suite de tests (make check) | Páginas: 271
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+41. Fecha: 10/01/2026 | Test: Gzip-1.14: suite de tests (make check) | Páginas: 275
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+42. Fecha: 10/01/2026 | Test: Make-4.4.1: suite de tests (make check) | Páginas: 285
+   Comandos ejecutados:
+     - su tester -c "PATH=$PATH make check"
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. Ejecutado como usuario no privilegiado (tester).
+
+43. Fecha: 10/01/2026 | Test: Patch-2.8: suite de tests (make check) | Páginas: 288
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+44. Fecha: 10/01/2026 | Test: Tar-1.35: suite de tests (make check) | Páginas: 290
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+45. Fecha: 10/01/2026 | Test: Texinfo-7.2: suite de tests (make check) | Páginas: 293
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+46. Fecha: 11/01/2026 | Test: Man-DB-2.13.1: suite de tests (make check) | Páginas: 309
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+47. Fecha: 11/01/2026 | Test: Procps-ng-4.0.5: suite de tests (make check) | Páginas: 312
+   Comandos ejecutados:
+     - su tester -c "PATH=$PATH make check"
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. Ejecutado como usuario no privilegiado (tester).
+
+48. Fecha: 11/01/2026 | Test: Util-linux-2.41.1: suite de tests (make check) | Páginas: 314
+   Comandos ejecutados:
+     - su tester -c "make -k check"
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación. Ejecutado como usuario no privilegiado (tester).
+
+49. Fecha: 11/01/2026 | Test: E2fsprogs-1.47.3: suite de tests (make check) | Páginas: 317
+   Comandos ejecutados:
+     - make check
+   Resumen: Ejecutar la batería de pruebas del paquete para validar build/instalación.
+
+50. Fecha: 14/01/2026 | Test: OpenSSH: tests y validaciones de servicio | Páginas: 351, 353
+   Comandos ejecutados:
+     - make -j1 tests
+     - systemctl status sshd --no-pager
+     - sshd -t -f /etc/ssh/sshd_config
+   Resumen: Ejecutar tests del paquete y verificar configuración/estado del servicio SSH. Validación sintáctica de sshd_config (sshd -t). Verificación de estado del servicio con systemctl.
