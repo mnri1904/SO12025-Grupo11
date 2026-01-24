@@ -1,0 +1,51 @@
+19/ene/26 | Integración con Contenedores (Docker/Podman) | Ariel Gaona
+20/ene/26 | Configuración de un Servicio en Red | Marcelo Romero
+21/ene/26 | Interfaz Gráfica Ligera (pero opcional / desafío extra) | duwang
+08/ene/26 | Configuración de un Servicio en Red | duwang
+08/ene/26 | Integración con Contenedores (Docker/Podman) | duwang
+19/ene/26 | Primeros pasos después del LFS | Ariel Gaona
+19/ene/26 | Recursos adicionales | Ariel Gaona
+19/ene/26 | Reiniciando el sistema | Ariel Gaona
+19/ene/26 | Regístrate en el conteo de LFS (Opcional) | Ariel Gaona
+19/ene/26 | El Final | Ariel Gaona
+20/ene/26 | Primeros pasos después del LFS | Marcelo Romero
+20/ene/26 | Recursos adicionales | Marcelo Romero
+15/ene/26 | Reiniciando el sistema | Marcelo Romero
+15/ene/26 | Regístrate en el conteo de LFS (Opcional) | Marcelo Romero
+15/ene/26 | El Final | Marcelo Romero
+02/ene/26 | Primeros pasos después del LFS | duwang
+02/ene/26 | Recursos adicionales | duwang
+02/ene/26 | Reiniciando el sistema | duwang
+02/ene/26 | Regístrate en el conteo de LFS (Opcional) | duwang
+02/ene/26 | El Final | duwang
+19/ene/26 | Hacer que el sistema LFS sea arrancable (Unidad 10) | Ariel Gaona
+19/ene/26 | Configuración del Sistema (Unidad 9) | Ariel Gaona
+19/ene/26 | Hacer que el sistema LFS sea arrancable (Unidad 10) | Marcelo Romero
+19/ene/26 | Configuración del Sistema (Unidad 9) | Marcelo Romero
+02/ene/26 | Hacer que el sistema LFS sea arrancable (Unidad 10) | duwang
+02/ene/26 | Configuración del Sistema (Unidad 9) | duwang
+18/ene/26 | Limpieza | Ariel Gaona
+18/ene/26 | Depuración de símbolos | Ariel Gaona
+18/ene/26 | Instalación del Software Básico del Sistema | Ariel Gaona
+11/ene/26 | Limpieza | Marcelo Romero
+11/ene/26 | Stripping ( ͡° ͜ʖ ͡°) | Marcelo Romero
+18/ene/26 | Instalación del Software Básico del Sistema | Marcelo Romero
+29/dic/25 | Limpieza | duwang
+29/dic/25 | Stripping ( ͡° ͜ʖ ͡°) | duwang
+29/dic/25 | Instalación del Software Básico del Sistema | duwang
+07/ene/26 | Entrada al Chroot y la construcción de Herramientas Temporales adicionales (Unidad 7) | Ariel Gaona
+07/ene/26 | Cross Compilación de Herramientas Temporales (Unidad 6) | Ariel Gaona
+07/ene/26 | Compilación de Cross-Toolchain (Unidad 5) | Ariel Gaona
+07/ene/26 | Lectura del material preliminar importante (Unidad 5) | Ariel Gaona
+16/nov/25 | Entrada al Chroot y la construcción de Herramientas Temporales adicionales (Unidad 7) | Marcelo Romero
+16/nov/25 | Cross Compilación de Herramientas Temporales (Unidad 6) | Marcelo Romero
+10/nov/25 | Compilación de Cross-Toolchain (Unidad 5) | Marcelo Romero
+10/nov/25 | Lectura del material preliminar importante (Unidad 5) | Marcelo Romero
+15/nov/25 | Entrada al Chroot y la construcción de Herramientas Temporales adicionales (Unidad 7) | duwang
+10/nov/25 | Cross Compilación de Herramientas Temporales (Unidad 6) | duwang
+10/nov/25 | Compilación de Cross-Toolchain (Unidad 5) | duwang
+26/oct/25 | Lectura del material preliminar importante (Unidad 5) | duwang
+10/nov/25 | Preparación para el Build (Pt. 2) (Unidades 3 y 4) | duwang
+10/nov/25 | Preparación para el Build (Pt. 1) (Unidades 1 y 2) | Ariel Gaona
+10/nov/25 | Lectura de la documentación | Marcelo Romero
+10/nov/25 | Estado del Arte | duwang
