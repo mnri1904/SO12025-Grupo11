@@ -6,7 +6,7 @@
 Gracias por usar nuestra shell enfocada en educación y seguridad.
 A continuación se mencionarán todos y cada uno de los comandos implementados y sus funcionalidades.
 
-1. ls
+1. ls o listar
 Descripción: lista el contenido de un directorio.
 Formato: ls [OPERANDO OPCIONAL] [RUTA VÁLIDA] o ls [RUTA VÁLIDA] [OPERANDO OPCIONAL]
 Sintaxis soportada:
@@ -24,7 +24,7 @@ Ejemplos de uso:
 - ls -a /etc
 
 
-2. cp
+2. cp o copiar
 Descripción: copia un archivo fuente a un destino.
 Formato: cp [OPERANDO OPCIONAL] [RUTA VÁLIDA 1] [RUTA VÁLIDA 2] o cp [RUTA VÁLIDA 1] [RUTA VÁLIDA 2] [OPERANDO OPCIONAL]
 Reglas principales:
@@ -42,7 +42,7 @@ Ejemplos de uso:
 - cp -v /home/user/a.txt /home/user/copia.txt
 
 
-3. cat
+3. cat o concatenar
 Descripción: escribe el contenido de archivos (o stdin) a stdout.
 Formato: cat [RUTA VÁLIDA 1] [RUTA VÁLIDA 2] o cat [RUTA VÁLIDA] o cat - o cat
 Sintaxis Soportada:
@@ -56,7 +56,7 @@ Errores típicos
 - Fallo en el proceso de lectura/escritura (SH_SYSERR).
 
 
-4. grep
+4. grep o buscar
 Descripción: filtra líneas que contengan un patrón.
 Formato: grep "[PATRON]" [RUTA VÁLIDA]
 Sintaxis soportada:
@@ -69,7 +69,7 @@ Errores típicos:
 - Fallos en la apertura del archivo (SH_SYSERR).
 
 
-5. rm
+5. rm o remover
 Descripción: elimina un archivo (no directorios).
 Formato: rm [ARCHIVO] o rm [OPERANDO OPCIONAL] [ARCHIVO]
 Sintaxis soportada:
@@ -83,10 +83,10 @@ Modo -v (único operando soportado):
 - Si se elimina correctamente, se imprime un mensaje de confirmación.
 Confirmación de seguridad:
 - Se muestra un aviso
-- Se lee la respuesta [s/n]. Si s, se continúa; si n, se aborta con SH_OK (no es error: el usuario canceló).
+- Se lee la respuesta [s/n]. Si s, se continúa; si n, se aborta con SH_OK.
 
 
-6. cd
+6. cd o cambiardir
 Descripción: cambia el directorio de trabajo actual del shell.
 Formato: cd [RUTA VÁLIDA]
 Sintaxis soportada:
@@ -104,7 +104,7 @@ Ejemplos de uso:
 - cd
 
 
-7. mkdir
+7. mkdir o creardir
 Descripción: crea un nuevo directorio.
 Formato: mkdir [RUTA VÁLIDA]
 Sintaxis soportada:
@@ -120,7 +120,7 @@ Ejemplos de uso:
 - mkdir /tmp/nueva_carpeta
 
 
-8. echo
+8. echo o eco
 Descripción: imprime en pantalla el texto ingresado por el usuario.
 Formato: echo [TEXTO]
 Sintaxis soportada:
@@ -134,45 +134,40 @@ Ejemplos de uso:
 - echo
 
 
-9. pwd
+9. pwd o diractual
 Descripción: muestra el directorio de trabajo actual.
 Formato: pwd
 Sintaxis soportada:
 - pwd
 Comportamiento:
-- Muestra el path absoluto del directorio actual (idealmente consistente con lo que maneja cd).
+- Muestra el path absoluto del directorio actual.
 Errores típicos:
-- Fallo al obtener el directorio actual (SH_SYSERR).
+- Fallo al obtener el directorio actual.
 Ejemplos de uso:
 - pwd
 
 
-10. exit
+10. exit o salir
 Descripción: finaliza la ejecución de la shell.
 Formato: exit
 Sintaxis soportada:
 - exit
 Comportamiento:
-- Antes de salir: registra el evento en el log (por ejemplo shell.log).
+- Antes de salir: registra el evento en el log.
 - Termina el loop principal y retorna el código correspondiente (SH_OK si no hay errores).
 Errores típicos:
-- Si falla el log, puedes continuar igualmente y salir (o retornar SH_SYSERR si tu especificación lo exige).
+- Si falla el log, puedes continuar igualmente y salir.
 Ejemplos de uso:
 - exit
 
 
-11. whoami
+11. whoami o quien soy
 Descripción: imprime en pantalla el nombre de usuario.
 Ejemplo de uso:
 -whoami
 
 
-12. clear
+12. clear o limpiar
 Descripción: limpia la pantalla de la terminal: borra el contenido visible y deja el cursor arriba para que sigas escribiendo, sin borrar el historial real de la sesión.
 Ejemplo de uso:
 - clear
-
-
-
-
-
