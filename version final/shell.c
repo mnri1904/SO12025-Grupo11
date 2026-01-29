@@ -114,9 +114,6 @@ int main(void) {
     const char *usuario = obtenerUsuario();
     if (!usuario) usuario = "desconocido";
 
-    const char *usuario = obtenerUsuario();
-    if (!usuario) usuario = "desconocido";
-
     /* ===== Restricción edad/horario ===== */
     int edad = obtenerEdadUsuario();
     if (accesoRestringidoPorEdadHorario(edad)) {
