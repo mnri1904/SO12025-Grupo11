@@ -70,12 +70,61 @@ static int esLineaVacia(const char *linea) {
     return 1;
 }
 
+static int horaActualLocal() {
+	/*
+	 * Funcion que se encarga de obtener la hora actual del sistema
+	 */
+    time_t t = time(NULL);
+    struct tm *tmv = localtime(&t);
+    return tmv ? tmv->tm_hour : -1;   // 0..23, o -1 si falla
+}
+
+static int obtenerEdadUsuario() {
+	/*
+	 * FUncion que obtiene la edad del usuario con una variable de entorno
+	 * Valor de retorno:
+	 * b -> la edad del usuario
+	 */
+    const char *env = getenv("SOSH_AGE");
+    if (env && *env) return atoi(env);
+
+    char b[8];
+    printf("Introduce tu edad edad: ");
+    fflush(stdout);
+    if (!fgets(b, sizeof b, stdin)) return -1;
+    return atoi(b);
+}
+
+static int accesoRestringidoPorEdadHorario(int edad) {
+	/*
+	 * Funcion que se encarga de definir si el usuario esta habilitado para usar la shell
+	 */
+    int h = horaActualLocal();
+    if (h < 0) return 0;
+
+    if (edad <= 0) return (h >= 22); // bloqueo desde 22:00
+    return (edad < 18 && h >= 22);
+}
+
+
 int main(void) {
     int nerror = SH_OK;
     int exito = 0;
 
     const char *usuario = obtenerUsuario();
     if (!usuario) usuario = "desconocido";
+
+    const char *usuario = obtenerUsuario();
+    if (!usuario) usuario = "desconocido";
+
+    /* ===== Restricción edad/horario ===== */
+    int edad = obtenerEdadUsuario();
+    if (accesoRestringidoPorEdadHorario(edad)) {
+        fprintf(stderr, "ACCESO DENEGADO: menores de 18 no pueden usar SOSH después de las 22:00.\n");
+        fprintf(stderr, "Opcional: definir SOSH_AGE para omitir la pregunta de edad (ej.: export SOSH_AGE=18)\n");
+        logAccion(usuario, "ACCESO", 0, "restriccion edad/horario");
+        return SH_USAGE;
+    }
 
     imprimirBanner();
 
@@ -114,28 +163,28 @@ int main(void) {
 
         /* ====================== COMANDOS ====================== */
 
-        if (strcmp(comando, "ls") == 0) {
+        if ((strcmp(comando, "ls") == 0) || (strcmp(comando, "listar") == 0)) {
             nerror = ejecLs(prompt);
         }
-        else if (strcmp(comando, "cp") == 0) {
+        else if ((strcmp(comando, "cp") == 0) || (strcmp(comando, "copiar") == 0)) {
             nerror = ejecCp(prompt);
             if (nerror != SH_OK) logError(usuario, prompt, strerror(errno));
         }
-        else if (strcmp(comando, "cat") == 0) {
+        else if ((strcmp(comando, "cat") == 0) || (strcmp(comando, "concatenar") == 0)) {
             nerror = ejecCat(prompt);
             if (nerror != SH_OK) logError(usuario, prompt, strerror(errno));
         }
-        else if (strcmp(comando, "grep") == 0) {
+        else if ((strcmp(comando, "grep") == 0) || (strcmp(comando, "buscar") == 0)) {
             nerror = ejecGrep(prompt);
             if (nerror != SH_OK) logError(usuario, prompt, strerror(errno));
         }
-        else if (strcmp(comando, "rm") == 0) {
+        else if ((strcmp(comando, "rm") == 0) || (strcmp(comando, "remover") == 0)) {
             nerror = ejecRm(prompt);
             if (nerror != SH_OK) logError(usuario, prompt, strerror(errno));
         }
 
         /* ---------------------- cd y cd ? ---------------------- */
-        else if (strcmp(comando, "cd") == 0) {
+        else if ((strcmp(comando, "cd") == 0) || (strcmp(comando, "cambiardir") == 0)) {
             char *arg1 = strtok_r(NULL, " \t", &cadena);
             char *arg2 = strtok_r(NULL, " \t", &cadena);
 
@@ -150,7 +199,7 @@ int main(void) {
         }
 
         /* ---------------------- pwd y pwd ? ---------------------- */
-        else if (strcmp(comando, "pwd") == 0) {
+        else if ((strcmp(comando, "pwd") == 0) || (strcmp(comando, "diractual") == 0)) {
             char *arg1 = strtok_r(NULL, " \t", &cadena);
             char *arg2 = strtok_r(NULL, " \t", &cadena);
 
@@ -165,7 +214,7 @@ int main(void) {
         }
 
         /* ---------------------- echo y echo ? ---------------------- */
-        else if (strcmp(comando, "echo") == 0) {
+        else if ((strcmp(comando, "echo") == 0) || (strcmp(comando, "eco") == 0)) {
 
             if (cadena != NULL && strcmp(cadena, "?") == 0) {
                 nerror = ayudaImpresion(123, 134);
@@ -176,7 +225,7 @@ int main(void) {
         }
 
         /* ---------------------- mkdir y mkdir ? ---------------------- */
-        else if (strcmp(comando, "mkdir") == 0) {
+        else if ((strcmp(comando, "mkdir") == 0) || (strcmp(comando, "creardir") == 0)) {
             char *arg1 = strtok_r(NULL, " \t", &cadena);
             char *arg2 = strtok_r(NULL, " \t", &cadena);
 
@@ -196,13 +245,13 @@ int main(void) {
             char *arg2 = strtok_r(NULL, " \t", &cadena);
 
             if (arg1 && strcmp(arg1, "?") == 0 && arg2 == NULL) {
-                nerror = ayudaShell("/usr/share/sosh/guia.txt");
+                nerror = ayudaShell("src/guia.txt");
             } else {
                 nerror = SH_USAGE;
             }
         }
         /* ---------------------- exit y exit ? ---------------------- */
-        else if (strcmp(comando, "exit") == 0) {
+        else if ((strcmp(comando, "exit") == 0) || (strcmp(comando, "salir") == 0)){
             char *arg1 = strtok_r(NULL, " \t", &cadena);
             char *arg2 = strtok_r(NULL, " \t", &cadena);
 
@@ -217,7 +266,7 @@ int main(void) {
                 nerror = SH_USAGE;
             }
         }
-        else if (strcmp(comando, "whoami") == 0) {
+        else if ((strcmp(comando, "whoami") == 0) || (strcmp(comando, "quiensoy") == 0)) {
 
             if (cadena != NULL && strcmp(cadena, "?") == 0) {
                 nerror = ayudaImpresion(164, 167);
@@ -226,18 +275,18 @@ int main(void) {
             }
         }
         else if (strcmp(comando, "seguridad") == 0) {
-        	nerror = ayudaShell("/usr/share/sosh/seguridad.txt");
+        	nerror = ayudaShell("src/seguridad.txt");
         }
         else if (strcmp(comando, "aprender") == 0) {
-        	nerror = ayudaShell("/usr/share/sosh/usos.txt");
+        	nerror = ayudaShell("src/usos.txt");
         }
         else if (strcmp(comando, "historia") == 0) {
-        	nerror = ayudaShell("/usr/share/sosh/historia.txt");
+        	nerror = ayudaShell("src/historia.txt");
         }
         else if (strcmp(comando, "distros") == 0) {
-        	nerror = ayudaShell("/usr/share/sosh/distros.txt");
+        	nerror = ayudaShell("src/distros.txt");
         }
-        else if (strcmp(comando, "clear") == 0) {
+        else if ((strcmp(comando, "clear") == 0) || (strcmp(comando, "limpiar") == 0)) {
             char *arg1 = strtok_r(NULL, " \t", &cadena);
             char *arg2 = strtok_r(NULL, " \t", &cadena);
 
@@ -271,12 +320,5 @@ int main(void) {
     }
     return nerror;
 }
-
-
-
-
-
-
-
 
 
